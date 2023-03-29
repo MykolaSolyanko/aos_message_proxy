@@ -170,6 +170,7 @@ func (v *Vchan) writer() {
 	for {
 		select {
 		case data := <-v.sendChan:
+			log.Debugf("Send data to vchan: %v", data)
 			if err := v.write(data); err != nil {
 				log.Errorf("Failed write to vchan: %v", aoserrors.Wrap(err))
 
@@ -188,6 +189,8 @@ func (v *Vchan) writer() {
 func (v *Vchan) write(data []byte) error {
 	v.Lock()
 	defer v.Unlock()
+
+	log.Debugf("Write data to vchan: %v", data)
 
 	if err := v.writeVchan(prepareHeader(data)); err != nil {
 		return err

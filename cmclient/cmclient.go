@@ -196,6 +196,8 @@ func (client *CMClient) processMessages() (err error) {
 			return aoserrors.Wrap(err)
 		}
 
+		log.Debugf("Received message: %v", message)
+	
 		data, err := proto.Marshal(message)
 		if err != nil {
 			log.Errorf("Failed to marshal message: %v", aoserrors.Wrap(err))
@@ -242,6 +244,8 @@ func (client *CMClient) receiveOutgoingMessages() {
 
 				continue
 			}
+
+			log.Debugf("Send outgoing message: %v", outgoingMessage)
 
 			if err := client.stream.Send(outgoingMessage); err != nil {
 				log.Errorf("Failed to send outgoing message: %v", aoserrors.Wrap(err))
